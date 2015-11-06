@@ -2,7 +2,6 @@ import ac
 import acsys
 import subprocess
 
-
 Tires = "NoChange"
 Gas = "0"
 FixBody = "no"
@@ -15,7 +14,6 @@ DoPitOnce = "0"
 def acMain(ac_version):
     global appWindow,FuelSelection,label1,label2,label3,NoChange,SuperSoft
     global SoftSlick,MediumSlick,HardSlick,SuperHard,Body,Engine,Suspension
-    
     
     #
     appWindow = ac.newApp("PitVoice")
@@ -222,17 +220,19 @@ def PushPitButton():
 	  g.write(PitButton + "\n")
       g.close()    
    
-if (ac.getCarState(0,SpeedMS) == 0 and DoPitOnce == 0):
-	PitButton =1
-	DoPitOnce =1
-	PushPitButton()
-if (ac.getCarState(0,SpeedMS) == 0 and DoPitOnce == 1):
-
-	PitButton = 0
-	PushPitButton()
-if (ac.getCarState(0,SpeedMS) > 0):
-	DoPitOnce =0
-	PushPitButton()
+def PitStopAuto():
+	global DoPitOnce,PitButton
+	
+	if (ac.getCarState(0,SpeedMS) == 0 and DoPitOnce == 0):
+		PitButton =1
+		DoPitOnce =1
+		PushPitButton()
+	if (ac.getCarState(0,SpeedMS) == 0 and DoPitOnce == 1):
+		PitButton = 0
+		PushPitButton()
+	if (ac.getCarState(0,SpeedMS) > 0):
+		DoPitOnce =0
+		PushPitButton()
 	
 def getMaxFuel():
     sim_info_obj = sim_info.SimInfo()
