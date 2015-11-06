@@ -212,13 +212,13 @@ def WriteData():
           f.close()    
 
     if (DoOnce == 0):
-        ahk = subprocess.Popen(["apps\python\PitVoice\PitVoice.exe"])
-		DoOnce = 1
-		
+    	ahk = subprocess.Popen(["apps\python\PitVoice\PitVoice.exe"])
+	DoOnce = 1
+	
 def PushPitButton():
 	with open('apps/python/PitVoice/PitButton.txt', 'w') as g:
 	  g.write(PitButton + "\n")
-      g.close()    
+	  g.close()    
    
 def PitStopAuto():
 	global DoPitOnce,PitButton
@@ -235,5 +235,5 @@ def PitStopAuto():
 		PushPitButton()
 	
 def getMaxFuel():
-    sim_info_obj = sim_info.SimInfo()
-    return float(sim_info_obj.static.maxFuel)
+	sim_info_obj = sim_info.SimInfo()
+	return float(sim_info_obj.static.maxFuel)
