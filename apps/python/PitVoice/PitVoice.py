@@ -214,7 +214,7 @@ def WriteData():
 
     if DoOnce == 0:
     	ahk = subprocess.Popen(["apps\python\PitVoice\PitVoice.exe"])
-	DoOnce = 1
+        DoOnce = 1
 
 def PitStopAuto():
     global DoPitOnce,PitButton
