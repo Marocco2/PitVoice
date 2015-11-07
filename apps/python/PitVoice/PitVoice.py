@@ -14,21 +14,12 @@ PitButton = "0"
 def acMain(ac_version):
     global appWindow,FuelSelection,label1,label2,label3,NoChange,SuperSoft
     global SoftSlick,MediumSlick,HardSlick,SuperHard,Body,Engine,Suspension
-    global DoOnce,ahk,PitButton,Speed
+    global DoOnce,ahk
 
     if DoOnce == 0:
     	ahk = subprocess.Popen(["apps\python\PitVoice\Pitvoice.exe"])
     	DoOnce = 1
     
-    Speed = ac.getCarState(0, SpeedKMH)
-    
-    if Speed < 1:
-    	PitButton = "1"
-    	PushPitButton()
-
-    if Speed >= 1:
-    	PitButton = "0"
-    	PushPitButton()
     
     #
     appWindow = ac.newApp("PitVoice")
@@ -107,6 +98,19 @@ def acMain(ac_version):
     ac.setFontSize(label3, 15)
     #
     return "PitVoice"
+
+def acUpdate(deltaT):
+    global PitButton,Speed
+    
+    Speed = ac.getCarState(0,acsys.CSSpeedKMH)
+    
+    if Speed < 1:
+    	PitButton = "1"
+    	PushPitButton()
+
+    if Speed >= 1:
+    	PitButton = "0"
+    	PushPitButton()
 
 def acShutdown():  
     subprocess.Popen.kill(ahk)
