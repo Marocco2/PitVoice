@@ -10,11 +10,25 @@ FixEngine = "no"
 FixSuspension = "no"
 DoOnce = 0
 PitButton = "0"
-DoPitOnce = 0
 
 def acMain(ac_version):
     global appWindow,FuelSelection,label1,label2,label3,NoChange,SuperSoft
     global SoftSlick,MediumSlick,HardSlick,SuperHard,Body,Engine,Suspension
+    global DoOnce,ahk,PitButton,Speed
+
+    if DoOnce == 0:
+    	ahk = subprocess.Popen(["apps\python\PitVoice\Pitvoice.exe"])
+    	DoOnce = 1
+    
+    Speed = ac.getCarState(0, SpeedKMH)
+    
+    if Speed < 1:
+    	PitButton = "1"
+    	PushPitButton()
+
+    if Speed >= 1:
+    	PitButton = "0"
+    	PushPitButton()
     
     #
     appWindow = ac.newApp("PitVoice")
@@ -202,7 +216,6 @@ def SuspensionEvent(name, state):
     WriteData()
     
 def WriteData():
-    global DoOnce,ahk
     
     with open('apps/python/PitVoice/Pit.txt', 'w') as f:
           f.write(Tires + "\n")
@@ -210,27 +223,7 @@ def WriteData():
           f.write(FixBody + "\n")
           f.write(FixEngine + "\n")
           f.write(FixSuspension + "\n")
-          f.close()    
-
-    if DoOnce == 0:
-    	ahk = subprocess.Popen(["apps\python\PitVoice\PitVoice.exe"])
-    	DoOnce = 1
-
-def PitStopAuto():
-    global DoPitOnce,PitButton
-	
-    if ac.getCarState(0, SpeedMS) == 0 and DoPitOnce == 0:
-    	PitButton = "1"
-    	DoPitOnce = 1
-    	PushPitButton()
-
-    if ac.getCarState(0, SpeedMS) == 0 and DoPitOnce == 1:
-    	PitButton = "0"
-    	PushPitButton()
-
-    if ac.getCarState(0, SpeedMS) > 0:
-    	DoPitOnce = 0
-    	PushPitButton()
+          f.close()
 	
 def PushPitButton():
     with open('apps/python/PitVoice/PitButton.txt', 'w') as g:

@@ -79,34 +79,34 @@ fuel = %gas%
 yes = yes
 
 if compound = NoChange
-    Click 1033, 142
+    Click 713, 142
 
 if compound = SuperSoft
-    Click 1183, 142
+    Click 842, 142
 
 if compound = SoftSlick
-    Click 1295, 142
+    Click 979, 142
 
 if compound = MediumSlick
-    Click 1406, 142
+    Click 1087, 142
 
 if compound = HardSlick
-    Click 1518, 142
+    Click 1198, 142
 
 if compound = SuperHard
-    Click 1631, 142
+    Click 1323, 142
 
 if fuel >= 1
-    MouseClick, left, 1379, 299,fuel
+    MouseClick, left, 1061, 299,fuel
 
 if yes = %body%
-    Click 1280, 467
+    Click 960, 467
 
 if yes = %engine%
-    Click 1523, 467
+    Click 1204, 467
 
 if yes = %suspension%
-    Click 1053, 466
+    Click 734, 466
 
-Click 1437, 623
+Click 1115, 623
 goto StartPV
