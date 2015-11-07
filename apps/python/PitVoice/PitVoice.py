@@ -10,6 +10,7 @@ FixEngine = "no"
 FixSuspension = "no"
 DoOnce = 0
 PitButton = "0"
+DoPitOnce = 0
 
 def acMain(ac_version):
     global appWindow,FuelSelection,label1,label2,label3,NoChange,SuperSoft
@@ -19,8 +20,7 @@ def acMain(ac_version):
     if DoOnce == 0:
     	ahk = subprocess.Popen(["apps\python\PitVoice\Pitvoice.exe"])
     	DoOnce = 1
-    
-    
+	
     #
     appWindow = ac.newApp("PitVoice")
     ac.setSize(appWindow,350,250)
@@ -100,16 +100,21 @@ def acMain(ac_version):
     return "PitVoice"
 
 def acUpdate(deltaT):
-    global PitButton,Speed
+    global PitButton,Speed,DoPitOnce
     
-    Speed = ac.getCarState(0,acsys.CSSpeedKMH)
+    Speed = ac.getCarState(0,acsys.CS.SpeedKMH)
     
-    if Speed < 1:
+    if Speed < 0.1 and DoPitOnce == 0:
     	PitButton = "1"
+    	DoPitOnce = 1
+    	PushPitButton()
+		
+    if DoPitOnce == 1:
+    	PitButton = "0"
     	PushPitButton()
 
-    if Speed >= 1:
-    	PitButton = "0"
+    if Speed >= 0.1:
+    	DoPitOnce = 0
     	PushPitButton()
 
 def acShutdown():  
