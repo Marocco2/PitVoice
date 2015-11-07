@@ -2,14 +2,15 @@ import ac
 import acsys
 import subprocess
 
+
 Tires = "NoChange"
 Gas = "0"
 FixBody = "no"
 FixEngine = "no"
 FixSuspension = "no"
-DoOnce = "0"
+DoOnce = 0
 PitButton = "0"
-DoPitOnce = "0"
+DoPitOnce = 0
 
 def acMain(ac_version):
     global appWindow,FuelSelection,label1,label2,label3,NoChange,SuperSoft
@@ -211,29 +212,28 @@ def WriteData():
           f.write(FixSuspension + "\n")
           f.close()    
 
-    if (DoOnce == 0):
+    if DoOnce == 0:
     	ahk = subprocess.Popen(["apps\python\PitVoice\PitVoice.exe"])
 	DoOnce = 1
+
+def PitStopAuto():
+    global DoPitOnce,PitButton
+	
+    if ac.getCarState(0, SpeedMS) == 0 and DoPitOnce == 0:
+    	PitButton = "1"
+    	DoPitOnce = 1
+    	PushPitButton()
+
+    if ac.getCarState(0, SpeedMS) == 0 and DoPitOnce == 1:
+    	PitButton = "0"
+    	PushPitButton()
+
+    if ac.getCarState(0, SpeedMS) > 0:
+    	DoPitOnce = 0
+    	PushPitButton()
 	
 def PushPitButton():
-	with open('apps/python/PitVoice/PitButton.txt', 'w') as g:
-	  g.write(PitButton + "\n")
-	  g.close()    
+    with open('apps/python/PitVoice/PitButton.txt', 'w') as g:
+          g.write(PitButton)
+          g.close()    
    
-def PitStopAuto():
-	global DoPitOnce,PitButton
-	
-	if (ac.getCarState(0,SpeedMS) == 0 and DoPitOnce == 0):
-		PitButton =1
-		DoPitOnce =1
-		PushPitButton()
-	if (ac.getCarState(0,SpeedMS) == 0 and DoPitOnce == 1):
-		PitButton = 0
-		PushPitButton()
-	if (ac.getCarState(0,SpeedMS) > 0):
-		DoPitOnce =0
-		PushPitButton()
-	
-def getMaxFuel():
-	sim_info_obj = sim_info.SimInfo()
-	return float(sim_info_obj.static.maxFuel)
