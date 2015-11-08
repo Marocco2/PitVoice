@@ -24,29 +24,28 @@ RunWait %comspec% /c "rec -c 1 sample.wav silence 1 0.1 3 1 3.0 3", , hide
 RunWait %comspec% /c "play off.wav", , hide; add stop alarm rec
 RunWait %comspec% /c "curl -s -XPOST https://api.wit.ai/speech?v=20141022 -L -H "Authorization: Bearer %token%" -H "Content-Type: audio/wav" --data-binary "@sample.wav" -o response.json", , hide
 FileDelete, sample.wav
-RunWait %comspec% /c "jq-win32.exe -r ".entities.tyre | .[].value.value" response.json > PitRaw.txt", , hide
+RunWait %comspec% /c "jq-win32.exe -r ".outcomes[].entities.tyre[].value" response.json > PitRaw.txt", , hide
 FileReadLine, tiresr, PitRaw.txt, 1
-RunWait %comspec% /c "jq-win32.exe -r ".entities.number | .[].value.value" response.json > PitRaw.txt", , hide
+if (tiresr = null)
+  tiresr = NoChange
+RunWait %comspec% /c "jq-win32.exe -r ".outcomes[].entities.number[].value" response.json > PitRaw.txt", , hide
 FileReadLine, gasr, PitRaw.txt, 1
-RunWait %comspec% /c "jq-win32.exe -r ".entities.FixBody | .[].value.value" response.json > PitRaw.txt", , hide
+if (gasr = null)
+  gasr = 0
+RunWait %comspec% /c "jq-win32.exe -r ".outcomes[].entities.FixBody[].value" response.json > PitRaw.txt", , hide
 FileReadLine, bodyr, PitRaw.txt, 1
-RunWait %comspec% /c "jq-win32.exe -r ".entities.FixEngine | .[].value.value" response.json > PitRaw.txt", , hide
+if (bodyr = null)
+  bodyr = no
+RunWait %comspec% /c "jq-win32.exe -r "..outcomes[].entities.FixEngine[].value" response.json > PitRaw.txt", , hide
 FileReadLine, enginer, PitRaw.txt, 1
-RunWait %comspec% /c "jq-win32.exe -r ".entities.FixSuspension | .[].value.value" response.json > PitRaw.txt", , hide
+if (enginer = null)
+  enginer = no
+RunWait %comspec% /c "jq-win32.exe -r ".outcomes[].entities.FixSuspension[].value" response.json > PitRaw.txt", , hide
 FileReadLine, suspensionr, PitRaw.txt, 1
+if (suspensionr = null)
+  suspensionr = no
 FileDelete, response.json
 FileDelete, PitRaw.txt
-
-if tiresr = 
-  tiresr = NoChange
-if gasr = 
-  gasr = 0
-if bodyr = 
-  bodyr = no
-if enginer = 
-  enginer = no
-if suspensionr = 
-  suspensionr = no
 
 tiresr = %tiresr%`r`n
 gasr = %gasr%`r`n
@@ -54,7 +53,6 @@ bodyr = %bodyr%`r`n
 enginer = %enginer%`r`n
 suspensionr = %suspensionr%`r`n
 
-FileDelete, Pit.txt
 PitFile = %A_WorkingDir%\Pit.txt
 f := FileOpen(PitFile, "w")
 f.Write(tiresr)
