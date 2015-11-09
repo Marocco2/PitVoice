@@ -20,7 +20,7 @@ Wit:
 token = DFSRHY2TSAWFHWSF6IYP5LLM2GCEMX3E
 RunWait %comspec% /c "setx AUDIODRIVER waveaudio", , hide
 Run %comspec% /c "play on.wav", , hide; add initial alarm rec
-RunWait %comspec% /c "rec -c 1 sample.wav trim 0 10 silence 1 0.1 3`% 1 3.0 3`%", , hide
+RunWait %comspec% /c "rec -c 1 sample.wav trim 0 10 silence 1 0.1 3`% 1 1.0 3`%", , hide
 Run %comspec% /c "play off.wav", , hide; add stop alarm rec
 RunWait %comspec% /c "curl -s -XPOST https://api.wit.ai/speech?v=20141022 -L -H "Authorization: Bearer %token%" -H "Content-Type: audio/wav" --data-binary "@sample.wav" -o response.json", , hide
 FileDelete, sample.wav
