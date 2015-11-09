@@ -2,12 +2,7 @@ import ac
 import acsys
 import subprocess
 
-
-Tires = "NoChange"
 Gas = "0"
-FixBody = "no"
-FixEngine = "no"
-FixSuspension = "no"
 DoOnce = 0
 PitButton = "0"
 DoPitOnce = 0
@@ -100,11 +95,12 @@ def acMain(ac_version):
     return "PitVoice"
 
 def acUpdate(deltaT):
-    global PitButton,Speed,DoPitOnce
+    global PitButton,Speed,DoPitOnce,PitFileText,PitFileLines,Tires,Gas,FixBody,FixEngine,FixSuspension
+    global SoftSlick,MediumSlick,HardSlick,SuperHard,Body,Engine,Suspension,NoChange,SuperSoft
     
     Speed = ac.getCarState(0,acsys.CS.SpeedKMH)
     
-    if Speed < 0.1 and DoPitOnce == 0:
+    if Speed <= 0 and DoPitOnce == 0:
     	PitButton = "1"
     	DoPitOnce = 1
     	PushPitButton()
@@ -113,9 +109,43 @@ def acUpdate(deltaT):
     	PitButton = "0"
     	PushPitButton()
 
-    if Speed >= 0.1:
+    if Speed > 0:
     	DoPitOnce = 0
     	PushPitButton()
+
+    PitFileText = open('apps/python/PitVoice/Pit.txt')
+    PitFileLines = PitFileText.splitlines()
+    Tires = PitFileLines[0]
+    FixBody = PitFileLines[2]
+    FixEngine = PitFileLines[3]
+    FixSuspension = PitFileLines[4]
+    PitFileText.close()
+
+    if Tires = "NoChange":
+        ac.setValue(NoChange,1)
+    if Tires = "SuperSoft":
+        ac.setValue(SuperSoft,1)
+    if Tires = "SoftSlickt":
+        ac.setValue(SoftSlick,1)
+    if Tires = "MediumSlick":
+        ac.setValue(MediumSlick,1)
+    if Tires = "HardSlick":
+        ac.setValue(SuperSoft,1)
+    if Tires = "SuperHard":
+        ac.setValue(SuperHard,1)
+
+    if FixBody = "yes":
+        ac.setValue(Body,1)
+    else:
+        ac.setValue(Body,0)
+    if FixEngine = "yes":
+        ac.setValue(Engine,1)
+    else:
+        ac.setValue(Engine,0)
+    if FixSuspension = "yes":
+        ac.setValue(Suspension,1)
+    else:
+        ac.setValue(Suspension,0)
 
 def acShutdown():  
     subprocess.Popen.kill(ahk)
