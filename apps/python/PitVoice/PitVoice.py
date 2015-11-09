@@ -2,7 +2,6 @@ import ac
 import acsys
 import subprocess
 
-Gas = "0"
 DoOnce = 0
 PitButton = "0"
 DoPitOnce = 0
@@ -116,36 +115,40 @@ def acUpdate(deltaT):
     PitFileText = open('apps/python/PitVoice/Pit.txt')
     PitFileLines = PitFileText.splitlines()
     Tires = PitFileLines[0]
+    Gas = PitFileLines[1]
     FixBody = PitFileLines[2]
     FixEngine = PitFileLines[3]
     FixSuspension = PitFileLines[4]
     PitFileText.close()
 
-    if Tires = "NoChange":
+    if Tires == "NoChange":
         ac.setValue(NoChange,1)
-    if Tires = "SuperSoft":
+    if Tires == "SuperSoft":
         ac.setValue(SuperSoft,1)
-    if Tires = "SoftSlickt":
+    if Tires == "SoftSlickt":
         ac.setValue(SoftSlick,1)
-    if Tires = "MediumSlick":
+    if Tires == "MediumSlick":
         ac.setValue(MediumSlick,1)
-    if Tires = "HardSlick":
+    if Tires == "HardSlick":
         ac.setValue(SuperSoft,1)
-    if Tires = "SuperHard":
+    if Tires == "SuperHard":
         ac.setValue(SuperHard,1)
 
-    if FixBody = "yes":
+    if FixBody == "yes":
         ac.setValue(Body,1)
     else:
         ac.setValue(Body,0)
-    if FixEngine = "yes":
+    if FixEngine == "yes":
         ac.setValue(Engine,1)
     else:
         ac.setValue(Engine,0)
-    if FixSuspension = "yes":
+    if FixSuspension == "yes":
         ac.setValue(Suspension,1)
     else:
         ac.setValue(Suspension,0)
+
+    if Gas != "0":
+        ac.setValue(FuelSelection,round(Gas))
 
 def acShutdown():  
     subprocess.Popen.kill(ahk)
