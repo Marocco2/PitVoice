@@ -10,7 +10,7 @@ DoPitOnce = 0
 def acMain(ac_version):
     global appWindow,FuelSelection,label1,label2,label3,NoChange,SuperSoft
     global SoftSlick,MediumSlick,HardSlick,SuperHard,Body,Engine,Suspension
-    global DoOnce,ahk,Tires,Gas,FixBody,FixEngine,FixSuspension
+    global DoOnce,ahk
 
     if DoOnce == 0:
     	ahk = subprocess.Popen(["apps\python\PitVoice\Pitvoice.exe"])
@@ -95,8 +95,8 @@ def acMain(ac_version):
     return "PitVoice"
 
 def acUpdate(deltaT):
-    global PitButton,Speed,DoPitOnce,PitFileText,PitFileLines,Tires,Gas,FixBody,FixEngine,FixSuspension
-    global SoftSlick,MediumSlick,HardSlick,SuperHard,Body,Engine,Suspension,NoChange,SuperSoft
+    global PitButton,Speed,DoPitOnce
+    
     
     Speed = ac.getCarState(0,acsys.CS.SpeedMS)
     
@@ -114,8 +114,52 @@ def acUpdate(deltaT):
     	DoPitOnce = 0
     	PushPitButton()
 
+    ResponseWit()
+
 def acShutdown():  
     subprocess.Popen.kill(ahk)
+
+def ResponseWit():
+    global SoftSlick,MediumSlick,HardSlick,SuperHard,Body,Engine,Suspension,NoChange,SuperSoft
+    global PitFileText,PitFileLines,Tires,Gas,FixBody,FixEngine,FixSuspension
+    
+    PitFileText = open('apps/python/PitVoice/Pit.txt')
+    PitFileLines = PitFileText.splitlines()
+    Tires = PitFileLines[0]
+    Gas = PitFileLines[1]
+    FixBody = PitFileLines[2]
+    FixEngine = PitFileLines[3]
+    FixSuspension = PitFileLines[4]
+    PitFileText.close()
+
+    if Tires == "NoChange":
+        ac.setValue(NoChange,1)
+    if Tires == "SuperSoft":
+        ac.setValue(SuperSoft,1)
+    if Tires == "SoftSlickt":
+        ac.setValue(SoftSlick,1)
+    if Tires == "MediumSlick":
+        ac.setValue(MediumSlick,1)
+    if Tires == "HardSlick":
+        ac.setValue(SuperSoft,1)
+    if Tires == "SuperHard":
+        ac.setValue(SuperHard,1)
+
+    if FixBody == "yes":
+        ac.setValue(Body,1)
+    else:
+        ac.setValue(Body,0)
+    if FixEngine == "yes":
+        ac.setValue(Engine,1)
+    else:
+        ac.setValue(Engine,0)
+    if FixSuspension == "yes":
+        ac.setValue(Suspension,1)
+    else:
+        ac.setValue(Suspension,0)
+
+    if Gas != "0":
+        ac.setValue(FuelSelection,round(Gas))
     
 def FuelEvent(x):
     global FuelSelection,amount,Gas
@@ -222,6 +266,18 @@ def SuspensionEvent(name, state):
     WriteData()
     
 def WriteData():
+
+    ac.console("Tires:" + Tires)
+    ac.console("Fuel:" + Gas)
+    ac.console("Fix body:" + FixBody)
+    ac.console("Fix engine:" + FixEngine)
+    ac.console("Fix suspension:" + FixSuspension)
+
+    ac.log("Tires:" + Tires)
+    ac.log("Fuel:" + Gas)
+    ac.log("Fix body:" + FixBody)
+    ac.log("Fix engine:" + FixEngine)
+    ac.log("Fix suspension:" + FixSuspension)
     
     with open('apps/python/PitVoice/Pit.txt', 'w') as f:
           f.write(Tires + "\n")
