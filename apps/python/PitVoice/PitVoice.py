@@ -16,10 +16,9 @@ def acMain(ac_version):
     	ahk = subprocess.Popen(["apps\python\PitVoice\Pitvoice.exe"])
     	DoOnce = 1
     	
-    ResponseWit()
     #
     appWindow = ac.newApp("PitVoice")
-    ac.setSize(appWindow,350,400)
+    ac.setSize(appWindow,350,250)
     ac.setTitle(appWindow,"")
     ac.setBackgroundOpacity(appWindow,0.5)
     ac.setBackgroundTexture(appWindow,"apps/python/PitVoice/PitMenu.png")
@@ -94,8 +93,11 @@ def acMain(ac_version):
     ac.setFontSize(label3, 15)
     #
     response=ac.addLabel(appWindow,PitFileText)
+    ac.setPosition(response,166,240)
     ac.setFontColor(response,1,1,0,0)
     ac.setFontSize(response, 12)
+
+    ResponseWit()
     return "PitVoice"
 
 def acUpdate(deltaT):
@@ -104,7 +106,7 @@ def acUpdate(deltaT):
     
     Speed = ac.getCarState(0,acsys.CS.SpeedMS)
     
-    if Speed <= 0.04 and DoPitOnce == 0:
+    if Speed <= 0.05 and DoPitOnce == 0:
     	PitButton = "1"
     	DoPitOnce = 1
     	PushPitButton()
@@ -114,7 +116,7 @@ def acUpdate(deltaT):
         PitButton = "0"
         PushPitButton()
     	
-    if Speed > 0.04:
+    if Speed > 0.05:
     	DoPitOnce = 0
     	PushPitButton()
 
@@ -127,8 +129,9 @@ def ResponseWit():
     global SoftSlick,MediumSlick,HardSlick,SuperHard,Body,Engine,Suspension,NoChange,SuperSoft
     global PitFileText,PitFileLines,Tires,Gas,FixBody,FixEngine,FixSuspension
     
-    PitFileText = open('apps/python/PitVoice/Pit.txt')
-    PitFileLines = PitFileText.splitlines()
+    with open('apps/python/PitVoice/Pit.txt') as PitFileText:
+        PitFileLines = [line.rstrip('\n') for line in PitFileText]
+    
     Tires = PitFileLines[0]
     Gas = PitFileLines[1]
     FixBody = PitFileLines[2]
