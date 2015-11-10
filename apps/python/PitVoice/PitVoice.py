@@ -10,17 +10,18 @@ DoPitOnce = 0
 def acMain(ac_version):
     global appWindow,FuelSelection,label1,label2,label3,NoChange,SuperSoft
     global SoftSlick,MediumSlick,HardSlick,SuperHard,Body,Engine,Suspension
-    global DoOnce,ahk
+    global DoOnce,ahk,response
 
     if DoOnce == 0:
     	ahk = subprocess.Popen(["apps\python\PitVoice\Pitvoice.exe"])
     	DoOnce = 1
-
+    	
+    ResponseWit()
     #
     appWindow = ac.newApp("PitVoice")
-    ac.setSize(appWindow,350,250)
+    ac.setSize(appWindow,350,400)
     ac.setTitle(appWindow,"")
-    ac.setBackgroundOpacity(appWindow,1)
+    ac.setBackgroundOpacity(appWindow,0.5)
     ac.setBackgroundTexture(appWindow,"apps/python/PitVoice/PitMenu.png")
     #
     FuelSelection = ac.addSpinner(appWindow,"")#Fuel
@@ -92,6 +93,9 @@ def acMain(ac_version):
     ac.setFontColor(label3,1,1,0,0)
     ac.setFontSize(label3, 15)
     #
+    response=ac.addLabel(appWindow,PitFileText)
+    ac.setFontColor(response,1,1,0,0)
+    ac.setFontSize(response, 12)
     return "PitVoice"
 
 def acUpdate(deltaT):
@@ -106,7 +110,7 @@ def acUpdate(deltaT):
     	PushPitButton()
 		
     if DoPitOnce == 1:
-        time.sleep(0.001)
+        time.sleep(0.005)
         PitButton = "0"
         PushPitButton()
     	
