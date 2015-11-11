@@ -5,6 +5,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 StartPV:
 
+Run %comspec% /c "setx AUDIODRIVER waveaudio", , hide
 FileReadLine, key, HotKey.txt, 1
 Hotkey, %key%, Wit
 Loop {
@@ -18,9 +19,8 @@ return
 Wit:
 
 token = DFSRHY2TSAWFHWSF6IYP5LLM2GCEMX3E
-RunWait %comspec% /c "setx AUDIODRIVER waveaudio", , hide
 Run %comspec% /c "play on.wav", , hide; add initial alarm rec
-RunWait %comspec% /c "rec -c 1 sample.wav trim 0 10 silence 1 0.5 3`% 1 5.0 3`%", , hide
+RunWait %comspec% /c "rec -c 1 sample.wav silence 1 0.05 2`% 1 3.0 2`%", , hide
 Run %comspec% /c "play off.wav", , hide; add stop alarm rec
 RunWait %comspec% /c "curl -s -XPOST https://api.wit.ai/speech?v=20141022 -L -H "Authorization: Bearer %token%" -H "Content-Type: audio/wav" --data-binary "@sample.wav" -o response.json", , hide
 FileDelete, sample.wav
@@ -47,14 +47,14 @@ if (suspensionr = null)
 FileDelete, response.json
 FileDelete, PitRaw.txt
 
-tiresr = %tiresr%`r`n
-gasr = %gasr%`r`n
-bodyr = %bodyr%`r`n
-enginer = %enginer%`r`n
-suspensionr = %suspensionr%`r`n
+tiresr = %tiresr%`n
+gasr = %gasr%`n
+bodyr = %bodyr%`n
+enginer = %enginer%`n
+suspensionr = %suspensionr%`n
 
 PitFile = %A_WorkingDir%\Pit.txt
-f := FileOpen(PitFile, "w")
+f := FileOpen(PitFile, "w `n")
 f.Write(tiresr)
 f.Write(gasr)
 f.Write(bodyr)
@@ -62,9 +62,17 @@ f.Write(enginer)
 f.Write(suspensionr)
 f.Close() 
 
+tiresr =
+gasr = 
+bodyr = 
+enginer = 
+suspensionr = 
+
 return
 
 Pit:
+
+Sleep, 40
 
 FileReadLine, tires, Pit.txt, 1
 FileReadLine, gas, Pit.txt, 2

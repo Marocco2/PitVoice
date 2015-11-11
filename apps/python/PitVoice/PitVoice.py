@@ -1,7 +1,6 @@
 import ac
 import acsys
 import subprocess
-import time
 
 DoOnce = 0
 PitButton = "0"
@@ -91,11 +90,7 @@ def acMain(ac_version):
     ac.setPosition(label3,166,110)
     ac.setFontColor(label3,1,1,0,0)
     ac.setFontSize(label3, 15)
-    #
-    response=ac.addLabel(appWindow,PitFileText)
-    ac.setPosition(response,166,240)
-    ac.setFontColor(response,1,1,0,0)
-    ac.setFontSize(response, 12)
+    # 
 
     ResponseWit()
     return "PitVoice"
@@ -112,7 +107,6 @@ def acUpdate(deltaT):
     	PushPitButton()
 		
     if DoPitOnce == 1:
-        time.sleep(0.005)
         PitButton = "0"
         PushPitButton()
     	
@@ -141,16 +135,46 @@ def ResponseWit():
 
     if Tires == "NoChange":
         ac.setValue(NoChange,1)
+        ac.setValue(SoftSlick,0)
+        ac.setValue(SuperSoft,0)
+        ac.setValue(MediumSlick,0)
+        ac.setValue(HardSlick,0)
+        ac.setValue(SuperHard,0)
     if Tires == "SuperSoft":
         ac.setValue(SuperSoft,1)
-    if Tires == "SoftSlickt":
+        ac.setValue(NoChange,0)
+        ac.setValue(SoftSlick,0)
+        ac.setValue(MediumSlick,0)
+        ac.setValue(HardSlick,0)
+        ac.setValue(SuperHard,0)
+    if Tires == "SoftSlick":
         ac.setValue(SoftSlick,1)
+        ac.setValue(NoChange,0)
+        ac.setValue(SuperSoft,0)
+        ac.setValue(MediumSlick,0)
+        ac.setValue(HardSlick,0)
+        ac.setValue(SuperHard,0)
     if Tires == "MediumSlick":
         ac.setValue(MediumSlick,1)
+        ac.setValue(NoChange,0)
+        ac.setValue(SuperSoft,0)
+        ac.setValue(SoftSlick,0)
+        ac.setValue(HardSlick,0)
+        ac.setValue(SuperHard,0)
     if Tires == "HardSlick":
         ac.setValue(SuperSoft,1)
+        ac.setValue(NoChange,0)
+        ac.setValue(SuperSoft,0)
+        ac.setValue(SoftSlick,0)
+        ac.setValue(MediumSlick,0)
+        ac.setValue(SuperHard,0)
     if Tires == "SuperHard":
         ac.setValue(SuperHard,1)
+        ac.setValue(NoChange,0)
+        ac.setValue(SuperSoft,0)
+        ac.setValue(SoftSlick,0)
+        ac.setValue(MediumSlick,0)
+        ac.setValue(HardSlick,0)
 
     if FixBody == "yes":
         ac.setValue(Body,1)
@@ -274,13 +298,13 @@ def SuspensionEvent(name, state):
     
 def WriteData():
 
-    ac.console("Tires:" + Tires)
+    ac.console("[PV]Tires:" + Tires)
     ac.console("Fuel:" + Gas)
     ac.console("Fix body:" + FixBody)
     ac.console("Fix engine:" + FixEngine)
     ac.console("Fix suspension:" + FixSuspension)
 
-    ac.log("Tires:" + Tires)
+    ac.log("[PV]Tires:" + Tires)
     ac.log("Fuel:" + Gas)
     ac.log("Fix body:" + FixBody)
     ac.log("Fix engine:" + FixEngine)
@@ -291,7 +315,7 @@ def WriteData():
           f.write(Gas + "\n")
           f.write(FixBody + "\n")
           f.write(FixEngine + "\n")
-          f.write(FixSuspension + "\n")
+          f.write(FixSuspension)
           f.close()
 	
 def PushPitButton():
