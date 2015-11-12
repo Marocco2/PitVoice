@@ -4,8 +4,9 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance ignore
 
 StartPV:
-
+IniRead, Res, Settings.ini, Resolution, Rs
 Run %comspec% /c "setx AUDIODRIVER waveaudio", , hide
+IniRead, key, Settings.ini, HotKey, key
 FileReadLine, key, HotKey.txt, 1
 Hotkey, %key%, Wit
 Loop {
@@ -84,6 +85,16 @@ compound = %tires%
 fuel = %gas%
 yes = yes
 
+if Res = 1
+    goto PitA
+}
+if Res = 2
+    goto PitB
+}
+
+;1920x1080 code
+PitA:
+
 if compound = NoChange
     Click 713, 142
 
@@ -115,4 +126,40 @@ if yes = %suspension%
     Click 734, 466
 
 Click 1115, 623
+goto StartPV
+
+;5760x1080 code
+PitB:
+
+if compound = NoChange
+    Click 2633, 142
+
+if compound = SuperSoft
+    Click 2762, 142
+
+if compound = SoftSlick
+    Click 2899, 142
+
+if compound = MediumSlick
+    Click 3007, 142
+
+if compound = HardSlick
+    Click 3118, 142
+
+if compound = SuperHard
+    Click 3243, 142
+
+if fuel >= 1
+    MouseClick, left, 2891, 299,fuel
+
+if yes = %body%
+    Click 2880, 467
+
+if yes = %engine%
+    Click 3124, 467
+
+if yes = %suspension%
+    Click 2654, 466
+
+Click 3035, 623
 goto StartPV

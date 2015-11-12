@@ -190,7 +190,7 @@ def ResponseWit():
         ac.setValue(Suspension,0)
 
     if Gas != "0":
-        ac.setValue(FuelSelection,round(Gas))
+        ac.setText(label3,"{}".format(round(Gas)))
     
 def FuelEvent(x):
     global FuelSelection,amount,Gas
