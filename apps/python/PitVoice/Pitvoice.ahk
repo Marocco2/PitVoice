@@ -87,10 +87,8 @@ yes = yes
 
 if Res = 1
     goto PitA
-}
 if Res = 2
     goto PitB
-}
 
 ;1920x1080 code
 PitA:
