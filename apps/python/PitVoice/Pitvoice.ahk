@@ -4,7 +4,9 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance ignore
 
 StartPV:
-IniRead, Res, Settings.ini, Resolution, Rs
+IniRead, noise, Settings.ini, Noise, perc
+IniRead, MS, Settings.ini, Delay, MS
+IniRead, Res, Settings.ini, Resolution, Rs, 1
 Run %comspec% /c "setx AUDIODRIVER waveaudio", , hide
 IniRead, key, Settings.ini, HotKey, key
 FileReadLine, key, HotKey.txt, 1
@@ -21,7 +23,7 @@ Wit:
 
 token = DFSRHY2TSAWFHWSF6IYP5LLM2GCEMX3E
 Run %comspec% /c "play on.wav", , hide; add initial alarm rec
-RunWait %comspec% /c "rec -c 1 sample.wav trim 0 10 silence 1 0.05 2`% 1 3.0 2`%", , hide
+RunWait %comspec% /c "rec -c 1 sample.wav trim 0 10 silence 1 0.05 %noise%`% 1 3.0 %noise%`%", , hide
 Run %comspec% /c "play off.wav", , hide; add stop alarm rec
 RunWait %comspec% /c "curl -s -XPOST https://api.wit.ai/speech?v=20141022 -L -H "Authorization: Bearer %token%" -H "Content-Type: audio/wav" --data-binary "@sample.wav" -o response.json", , hide
 FileDelete, sample.wav
@@ -73,7 +75,7 @@ return
 
 Pit:
 
-Sleep, 40
+Sleep, %MS%
 
 FileReadLine, tires, Pit.txt, 1
 FileReadLine, gas, Pit.txt, 2
