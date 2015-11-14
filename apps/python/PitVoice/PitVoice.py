@@ -101,7 +101,7 @@ def acUpdate(deltaT):
     
     Speed = ac.getCarState(0,acsys.CS.SpeedMS)
     
-    if Speed <= 0.05 and DoPitOnce == 0:
+    if Speed <= 0.050 and DoPitOnce == 0:
     	PitButton = "1"
     	DoPitOnce = 1
     	PushPitButton()
@@ -110,7 +110,7 @@ def acUpdate(deltaT):
         PitButton = "0"
         PushPitButton()
     	
-    if Speed > 0.05:
+    if Speed > 0.050:
     	DoPitOnce = 0
     	PushPitButton()
 
