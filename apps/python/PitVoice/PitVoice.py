@@ -116,8 +116,8 @@ def acUpdate(deltaT):
     	PushPitButton()
 
     ResponseWit()
-    ac.console("[PV]Refresh at " + datetime.datetime.now())
-    ac.log("[PV]Refresh at " + datetime.datetime.now())
+    ac.console("[PV]Refresh at " + str(datetime.datetime.now()))
+    ac.log("[PV]Refresh at " + str(datetime.datetime.now()))
 
 def acShutdown():  
     subprocess.Popen.kill(ahk)
