@@ -7,6 +7,7 @@ StartPV:
 IniRead, noise, Settings.ini, Noise, perc
 IniRead, MS, Settings.ini, Delay, MS
 IniRead, Res, Settings.ini, Resolution, Rs, 1
+IniRead, Lang, Settings.ini, Lang, Lang, en
 Run %comspec% /c "setx AUDIODRIVER waveaudio", , hide
 IniRead, key, Settings.ini, HotKey, key
 FileReadLine, key, HotKey.txt, 1
@@ -20,8 +21,10 @@ if pitbutton = 1
 return
 
 Wit:
-
-token = DFSRHY2TSAWFHWSF6IYP5LLM2GCEMX3E
+if Lang = en
+	token = DFSRHY2TSAWFHWSF6IYP5LLM2GCEMX3E
+if Lang = it
+	token = DFSTUSUFYKIBCJNPRRLPCUAUV4WLOR2K
 Run %comspec% /c "play on.wav", , hide; add initial alarm rec
 RunWait %comspec% /c "rec -c 1 sample.wav trim 0 10 silence 1 0.05 %noise%`% 1 3.0 %noise%`%", , hide
 Run %comspec% /c "play off.wav", , hide; add stop alarm rec
