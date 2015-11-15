@@ -216,5 +216,4 @@ pip-log.txt
 .mr.developer.cfg
 
 #Settings
-HotKey.txt
-Pit.txt
+apps/python/PitVoice/Pit.txt
