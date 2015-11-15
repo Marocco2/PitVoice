@@ -1,6 +1,7 @@
 import ac
 import acsys
 import subprocess
+import datetime
 
 DoOnce = 0
 PitButton = "0"
@@ -101,7 +102,7 @@ def acUpdate(deltaT):
     
     Speed = ac.getCarState(0,acsys.CS.SpeedMS)
     
-    if Speed <= 0.050 and DoPitOnce == 0:
+    if Speed <= 0.060 and DoPitOnce == 0:
     	PitButton = "1"
     	DoPitOnce = 1
     	PushPitButton()
@@ -110,11 +111,13 @@ def acUpdate(deltaT):
         PitButton = "0"
         PushPitButton()
     	
-    if Speed > 0.050:
+    if Speed > 0.060:
     	DoPitOnce = 0
     	PushPitButton()
 
     ResponseWit()
+    ac.console("[PV]Refresh at " + datetime.now())
+    ac.log("[PV]Refresh at " + datetime.now())
 
 def acShutdown():  
     subprocess.Popen.kill(ahk)
@@ -298,17 +301,8 @@ def SuspensionEvent(name, state):
     
 def WriteData():
 
-    ac.console("[PV]Tires:" + Tires)
-    ac.console("Fuel:" + Gas)
-    ac.console("Fix body:" + FixBody)
-    ac.console("Fix engine:" + FixEngine)
-    ac.console("Fix suspension:" + FixSuspension)
-
-    ac.log("[PV]Tires:" + Tires)
-    ac.log("Fuel:" + Gas)
-    ac.log("Fix body:" + FixBody)
-    ac.log("Fix engine:" + FixEngine)
-    ac.log("Fix suspension:" + FixSuspension)
+    ac.console("[PV]Tires:" + Tires + ",Fuel:" + Gas + "Fix body:" + FixBody + "Fix engine:" + FixEngine + "Fix suspension:" + FixSuspension)
+    ac.log("[PV]Tires:" + Tires + ",Fuel:" + Gas + "Fix body:" + FixBody + "Fix engine:" + FixEngine + "Fix suspension:" + FixSuspension)
     
     with open('apps/python/PitVoice/Pit.txt', 'w') as f:
           f.write(Tires + "\n")
