@@ -116,8 +116,8 @@ def acUpdate(deltaT):
     	PushPitButton()
 
     ResponseWit()
-    ac.console("[PV]Refresh at " + datetime.now())
-    ac.log("[PV]Refresh at " + datetime.now())
+    ac.console("[PV]Refresh at " + datetime.datetime.now())
+    ac.log("[PV]Refresh at " + datetime.datetime.now())
 
 def acShutdown():  
     subprocess.Popen.kill(ahk)
@@ -193,7 +193,7 @@ def ResponseWit():
         ac.setValue(Suspension,0)
 
     if Gas != "0":
-        ac.setText(label3,"{}".format(round(Gas)))
+        ac.setText(label3,"{}".format(Gas))
     
 def FuelEvent(x):
     global FuelSelection,amount,Gas
