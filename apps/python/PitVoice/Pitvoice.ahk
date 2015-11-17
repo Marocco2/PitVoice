@@ -25,6 +25,8 @@ if Lang = en
 	token = DFSRHY2TSAWFHWSF6IYP5LLM2GCEMX3E
 if Lang = it
 	token = DFSTUSUFYKIBCJNPRRLPCUAUV4WLOR2K
+if Lang = fr
+	token = UQ7CPQNORSPWFTE2A6MMEGIH4BLBTBQU
 Run %comspec% /c "play on.wav", , hide; add initial alarm rec
 RunWait %comspec% /c "rec -c 1 sample.wav trim 0 10 silence 1 0.05 %noise%`% 1 3.0 %noise%`%", , hide
 Run %comspec% /c "play off.wav", , hide; add stop alarm rec
